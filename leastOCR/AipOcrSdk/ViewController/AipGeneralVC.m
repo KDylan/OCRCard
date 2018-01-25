@@ -90,7 +90,6 @@ static const CGFloat cardScale = 0.02;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-   
     [self config];
     
     //  初始化View
@@ -103,6 +102,8 @@ static const CGFloat cardScale = 0.02;
     self.cameraController = [[AipCameraController alloc] initWithCameraPosition:AVCaptureDevicePositionBack];
     
     self.cutImageView.imgDelegate = self;
+    
+    self.imageDeviceOrientation = UIDeviceOrientationPortrait;
     
     self.device  = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
