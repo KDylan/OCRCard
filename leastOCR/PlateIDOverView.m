@@ -41,13 +41,13 @@
         //设置线的宽度
         CGContextSetLineWidth(currentContext, line_w);
         //  X方向长度
-        CGFloat X_line =  self.frame.size.width/6;
+        CGFloat X_line =  self.frame.size.width/12;
         //  Y方向长度
-        CGFloat Y_line =  self.frame.size.height/6;
+        CGFloat Y_line =  X_line;
         //  顶点X
         CGFloat W_X = self.frame.size.width;
         //  顶点Y
-        CGFloat H_Y = self.frame.size.width;
+        CGFloat H_Y = self.frame.size.height;
     
     
     /*画四个角线段*/

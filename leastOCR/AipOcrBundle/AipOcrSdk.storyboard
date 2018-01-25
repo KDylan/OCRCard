@@ -240,9 +240,9 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3C-Ze-BxW">
-                                <rect key="frame" x="66" y="212" width="243.5" height="243.5"/>
+                                <rect key="frame" x="66" y="285" width="243.5" height="97.5"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="G3C-Ze-BxW" secondAttribute="height" id="eD5-nj-ocL"/>
+                                    <constraint firstAttribute="width" secondItem="G3C-Ze-BxW" secondAttribute="height" multiplier="5:2" id="eD5-nj-ocL"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jbR-9R-eTw">

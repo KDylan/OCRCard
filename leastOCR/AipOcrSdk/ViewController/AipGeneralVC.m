@@ -90,6 +90,7 @@ static const CGFloat cardScale = 0.02;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+   
     [self config];
     
     //  初始化View
@@ -102,8 +103,6 @@ static const CGFloat cardScale = 0.02;
     self.cameraController = [[AipCameraController alloc] initWithCameraPosition:AVCaptureDevicePositionBack];
     
     self.cutImageView.imgDelegate = self;
-    
-    self.imageDeviceOrientation = UIDeviceOrientationPortrait;
     
     self.device  = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
     
@@ -129,7 +128,7 @@ static const CGFloat cardScale = 0.02;
     }
     NSLog(@" self.cutImageView.scale = %f", self.cutImageView.scale);
 
-}
+ }
 
 
 -(void)ViewInit{
@@ -184,8 +183,8 @@ static const CGFloat cardScale = 0.02;
     //
     CGFloat Scrren_W = self.view.frame.size.width;
     
-    CGFloat scanView_w = Scrren_W*0.65;
-    CGFloat scanView_h = scanView_w;
+    CGFloat scanView_w = Scrren_W*0.80;
+    CGFloat scanView_h = scanView_w*0.4;
     CGFloat scanView_x = center.x-scanView_w/2;
     CGFloat scanView_y = (center.y-49)-scanView_h/2;//  底部拍照toolBar高度98
     //初始化识别框
@@ -658,28 +657,29 @@ static const CGFloat cardScale = 0.02;
     if (self.curDeviceOrientation == UIDeviceOrientationPortrait) {
         
         transform = CGAffineTransformMakeRotation(0);
-       self.msgLabel.hidden = NO;
+       
+        self.msgLabel.hidden = NO;
+        
         self.imageDeviceOrientation = UIDeviceOrientationPortrait;
     }else if (self.curDeviceOrientation == UIDeviceOrientationLandscapeLeft){
         
         transform = CGAffineTransformMakeRotation(M_PI_2);
-        if (!self.isCarPlate) {//  车牌不倒转
-            self.msgLabel.hidden = YES;
-        }
-
+       
+        self.msgLabel.hidden = YES;
+        
         self.imageDeviceOrientation = UIDeviceOrientationLandscapeLeft;
     }else if (self.curDeviceOrientation == UIDeviceOrientationLandscapeRight){
         
         transform = CGAffineTransformMakeRotation(-M_PI_2);
-        if (!self.isCarPlate) {//  车牌不倒转
-            self.msgLabel.hidden = YES;
-        }
-
+     
+        self.msgLabel.hidden = YES;
+        
         self.imageDeviceOrientation = UIDeviceOrientationLandscapeRight;
     }else {
-        
         transform = CGAffineTransformMakeRotation(0);
+        
         self.msgLabel.hidden = NO;
+        
         self.imageDeviceOrientation = UIDeviceOrientationPortrait;
         
     }
@@ -699,9 +699,8 @@ static const CGFloat cardScale = 0.02;
         self.checkChooseBtn.transform = transform;
         self.transformButton.transform = transform;
         
-//        self.plateScanView.transform = transform;
+        self.plateScanView.transform = transform;
         self.taxiScanView.transform = transform;
-        
         
     } completion:^(BOOL finished) {
         

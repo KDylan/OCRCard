@@ -77,31 +77,6 @@
     
     switch (self.Type) {
         case 1:
-        {//  文字识别【出租车资格证识别】
-            
-            self.isTaxiCard = YES;
-            self.isLineCard = NO;
-            
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-            [[AipOcrService shardService] detectTextBasicFromImage:self.imageView.image
-                                                       withOptions:options
-                                                    successHandler:_successHandler
-                                                       failHandler:_failHandler];
-        }
-            break;
-        case 2:
-        {
-            //  身份证正面识别
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            [[AipOcrService shardService] detectIdCardFrontFromImage:self.imageView.image
-                                                         withOptions:nil
-                                                      successHandler:_successHandler                                                                                failHandler:_failHandler];
-        }
-            break;
-        case 3:
         {//  车牌识别
             [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
             
@@ -113,17 +88,8 @@
             
         }
             break;
-        case 4:
-        {//  从业资格证正面拍照识别
-           
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
             
-            [[AipOcrService shardService] detectIdCardFrontFromImage:self.imageView.image
-                                                         withOptions:nil
-                                                      successHandler:_successHandler                                                                                failHandler:_failHandler];
-        }
-            break;
-        case 5:
+        case 2:
         {//  文字识别【线路牌识别】
             
             self.isLineCard = YES;
@@ -138,7 +104,35 @@
                                                        failHandler:_failHandler];
         }
             break;
-        case 6:
+            
+        case 3:
+        {//  文字识别【出租车资格证识别】
+            
+            self.isTaxiCard = YES;
+            self.isLineCard = NO;
+            
+            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+            
+            NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
+            [[AipOcrService shardService] detectTextBasicFromImage:self.imageView.image
+                                                       withOptions:options
+                                                    successHandler:_successHandler
+                                                       failHandler:_failHandler];
+        }
+            break;
+            
+        case 4:
+        {//  从业资格证正面拍照识别
+            
+            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+            
+            [[AipOcrService shardService] detectIdCardFrontFromImage:self.imageView.image
+                                                         withOptions:nil
+                                                      successHandler:_successHandler                                                                                failHandler:_failHandler];
+        }
+            break;
+            
+        case 5:
         {//  文字通用表格识别
             
             self.isLineCard = NO;
@@ -153,16 +147,23 @@
                                                        failHandler:_failHandler];
         }
             break;
-
             
+        case 6:
+        {
+            //  身份证正面识别
+            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+            
+            [[AipOcrService shardService] detectIdCardFrontFromImage:self.imageView.image
+                                                         withOptions:nil
+                                                      successHandler:_successHandler                                                                                failHandler:_failHandler];
+        }
+            break;
+       
         default:
             [MBProgressHUD showError:@"请先拍照" ToView:self.view];
             break;
     }
 }
-
-
-
 
 #pragma mark -------------------------    自定义函数方法   -------------------------------
 
@@ -173,17 +174,17 @@
     
     self.actionList = [NSMutableArray array];
     
-    [self.actionList addObject:@[@"出租车资格证识别", @"taxiCargeneralBasicOCR"]];
+    [self.actionList addObject:@[@"【车牌】识别", @"plateLicenseOCR"]];
+    
+    [self.actionList addObject:@[@"【路线牌】正面拍照识别", @"lineCardgeneralBasicOCR"]];
+    
+    [self.actionList addObject:@[@"【出租车资格证】识别", @"taxiCargeneralBasicOCR"]];
 
+    [self.actionList addObject:@[@"【从业资格证】正面拍照识别", @"EmpoyledCardOCROnlineFront"]];
+    
+    [self.actionList addObject:@[@"【表格】文字通用识别", @"generalBasicOCR"]];
+   
     [self.actionList addObject:@[@"身份证正面【拍照识别】", @"idcardOCROnlineFront"]];
-    
-    [self.actionList addObject:@[@"车牌识别", @"plateLicenseOCR"]];
- 
-    [self.actionList addObject:@[@"从业资格证正面拍照识别", @"EmpoyledCardOCROnlineFront"]];
-    
-    [self.actionList addObject:@[@"路线牌正面拍照识别", @"lineCardgeneralBasicOCR"]];
-  
-    [self.actionList addObject:@[@"文字通用识别【表格】", @"generalBasicOCR"]];
     
     [self.actionList addObject:@[@"身份证正面【扫描识别】", @"localIdcardOCROnlineFront"]];
 }
@@ -377,7 +378,7 @@
             [weakSelf performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
         }
         
-        if (weakSelf.isTaxiCard) {//  资格证
+        if (weakSelf.isTaxiCard) {//  出租车资格证
             
             [weakSelf ocrTaxiCardSuccessful:result];
             
