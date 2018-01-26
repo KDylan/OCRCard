@@ -130,6 +130,8 @@ static const CGFloat cardScale = 0.02;
 
 -(void)ViewInit{
     
+    self.checkChooseBtn.hidden = YES;
+    
     [self setupViews];
     //初始化身份证质量控制模块
     [self setupIdcardQuality];
@@ -225,6 +227,14 @@ static const CGFloat cardScale = 0.02;
 
 //上传图片识别结果
 - (IBAction)pressCheckChoose:(id)sender {
+  
+}
+
+
+/**
+  图片请求操作
+ */
+-(void)imageRequestAction{
     
     CGRect rect  = [self TransformTheRect];
     
@@ -244,8 +254,8 @@ static const CGFloat cardScale = 0.02;
     switch (self.cardType) {
         case CardTypeIdCardFont:{//   身份证正面
             if(self.handler){
-                self.handler(self.finalImage);
-                
+//                self.handler(self.finalImage);
+                self.handler(self.finalImage, [NSDate date]);
                 [self dismissViewControllerAnimated:YES completion:^{
                     //  保存图片到本地相册
                     UIImageWriteToSavedPhotosAlbum(self.finalImage, self, nil, nil);
@@ -257,8 +267,7 @@ static const CGFloat cardScale = 0.02;
             
         case CardTypeIdCardBack: { //  身份证背面
             if(self.handler){
-                self.handler(self.finalImage);
-                
+                  self.handler(self.finalImage, [NSDate date]);
                 [self dismissViewControllerAnimated:YES completion:^{
                     //  保存图片到本地相册
                     UIImageWriteToSavedPhotosAlbum(self.finalImage, self, nil, nil);
@@ -269,8 +278,7 @@ static const CGFloat cardScale = 0.02;
             break;
         case CardTypeBankCard: {  //  银行卡
             if(self.handler){
-                self.handler(self.finalImage);
-                
+                  self.handler(self.finalImage, [NSDate date]);
                 [self dismissViewControllerAnimated:YES completion:^{
                     //  保存图片到本地相册
                     UIImageWriteToSavedPhotosAlbum(self.finalImage, self, nil, nil);
@@ -390,12 +398,13 @@ static const CGFloat cardScale = 0.02;
 //     self.shapeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7].CGColor;
 }
 
-+(AipCaptureCardVC *)ViewControllerWithCardType:(CardType)type andImageHandler:(void (^)(UIImage *image))handler {
++(AipCaptureCardVC *)ViewControllerWithCardType:(CardType)type andImageHandler:(handler)handler {
     
     UIStoryboard *mainSB = [UIStoryboard storyboardWithName:@"AipOcrSdk" bundle:[NSBundle bundleForClass:[self class]]];
     AipCaptureCardVC *CaptureCardVC = [mainSB instantiateViewControllerWithIdentifier:@"AipCaptureCardVC"];
 
     CaptureCardVC.cardType = type;
+    
     CaptureCardVC.handler = handler;
 
     NSLog(@"进来身份证");
@@ -444,6 +453,8 @@ static const CGFloat cardScale = 0.02;
     self.toolViewBoom.constant = -V_H(self.toolsView);
     
     [self shapeLayerChangeDark];
+    //  图片请求操作
+    [self imageRequestAction];
 }
 
 - (void)OffLight {
@@ -727,7 +738,7 @@ static const CGFloat cardScale = 0.02;
             tips = [NSString stringWithFormat:@"状态正常 识别中.."];
 
             if(self.handler){
-                self.handler(self.finalImage);
+                   self.handler(self.finalImage, [NSDate date]);
             }
             self.recognizedSucceed = YES;
             dispatch_semaphore_signal(_sema);

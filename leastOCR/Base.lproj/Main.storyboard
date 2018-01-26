@@ -144,13 +144,7 @@
                             <constraint firstItem="7i1-Ev-pAw" firstAttribute="top" secondItem="10M-Z1-dDk" secondAttribute="bottom" id="zyM-94-qtQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="wyk-oc-dFZ">
-                        <barButtonItem key="rightBarButtonItem" title="请求" id="IqA-ue-WQf">
-                            <connections>
-                                <action selector="requestAvtion:" destination="FrG-pe-XYB" id="0oG-Av-C2g"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="wyk-oc-dFZ"/>
                     <connections>
                         <outlet property="imageView" destination="xTr-gr-PLs" id="ati-wv-Ecr"/>
                         <outlet property="imageView_H" destination="NL3-oe-zTb" id="8gV-ee-PLm"/>

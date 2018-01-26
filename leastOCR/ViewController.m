@@ -65,106 +65,6 @@
     
 }
 
-
-#pragma mark -------------------------    按钮点击方法    -------------------------------
-
-
-- (IBAction)requestAvtion:(id)sender {
-    
-    self.startTime = [NSDate date];
-
-    NSLog(@"--%ld",(long)self.Type);
-    
-    switch (self.Type) {
-        case 1:
-        {//  车牌识别
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            [[AipOcrService shardService] detectPlateNumberFromImage:self.imageView.image
-                                                         withOptions:nil
-                                                      successHandler:_successHandler
-                                                         failHandler:_failHandler];
-            
-            
-        }
-            break;
-            
-        case 2:
-        {//  文字识别【线路牌识别】
-            
-            self.isLineCard = YES;
-            self.isTaxiCard = NO;
-            
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-            [[AipOcrService shardService] detectTextBasicFromImage:self.imageView.image
-                                                       withOptions:options
-                                                    successHandler:_successHandler
-                                                       failHandler:_failHandler];
-        }
-            break;
-            
-        case 3:
-        {//  文字识别【出租车资格证识别】
-            
-            self.isTaxiCard = YES;
-            self.isLineCard = NO;
-            
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-            [[AipOcrService shardService] detectTextBasicFromImage:self.imageView.image
-                                                       withOptions:options
-                                                    successHandler:_successHandler
-                                                       failHandler:_failHandler];
-        }
-            break;
-            
-        case 4:
-        {//  从业资格证正面拍照识别
-            
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            [[AipOcrService shardService] detectIdCardFrontFromImage:self.imageView.image
-                                                         withOptions:nil
-                                                      successHandler:_successHandler                                                                                failHandler:_failHandler];
-        }
-            break;
-            
-        case 5:
-        {//  文字通用表格识别
-            
-            self.isLineCard = NO;
-            self.isTaxiCard = NO;
-            
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-            [[AipOcrService shardService] detectTextBasicFromImage:self.imageView.image
-                                                       withOptions:options
-                                                    successHandler:_successHandler
-                                                       failHandler:_failHandler];
-        }
-            break;
-            
-        case 6:
-        {
-            //  身份证正面识别
-            [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-            
-            [[AipOcrService shardService] detectIdCardFrontFromImage:self.imageView.image
-                                                         withOptions:nil
-                                                      successHandler:_successHandler                                                                                failHandler:_failHandler];
-        }
-            break;
-       
-        default:
-            [MBProgressHUD showError:@"请先拍照" ToView:self.view];
-            break;
-    }
-}
-
 #pragma mark -------------------------    自定义函数方法   -------------------------------
 
 /**
@@ -179,34 +79,36 @@
     [self.actionList addObject:@[@"【路线牌】正面拍照识别", @"lineCardgeneralBasicOCR"]];
     
     [self.actionList addObject:@[@"【出租车资格证】识别", @"taxiCargeneralBasicOCR"]];
-
+    
     [self.actionList addObject:@[@"【从业资格证】正面拍照识别", @"EmpoyledCardOCROnlineFront"]];
     
     [self.actionList addObject:@[@"【表格】文字通用识别", @"generalBasicOCR"]];
-   
+    
     [self.actionList addObject:@[@"身份证正面【拍照识别】", @"idcardOCROnlineFront"]];
     
-    [self.actionList addObject:@[@"身份证正面【扫描识别】", @"localIdcardOCROnlineFront"]];
+//    [self.actionList addObject:@[@"身份证正面【扫描识别】", @"localIdcardOCROnlineFront"]];
 }
 
 /**
  基础文字识别[表格]
  */
 - (void)generalBasicOCR{
+    self.isTaxiCard = NO;
+    self.isLineCard = NO;
+    __weak typeof(self) weakSelf  = self;
     
-    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image) {
+    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image,NSDate *StartTime)  {
         
-        //        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
         
-        //        NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-        //        [[AipOcrService shardService] detectTextBasicFromImage:image
-        //                                                   withOptions:options
-        //                                                successHandler:_successHandler
-        //                                                   failHandler:_failHandler];
+        NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
+        [[AipOcrService shardService] detectTextBasicFromImage:image
+                                                   withOptions:options
+                                                successHandler:_successHandler
+                                                   failHandler:_failHandler];
         
         
-        [self demoDoThingImage:image];
-        
+        [self demoDoThingImage:image startTime:StartTime];
     }];
     vc.GeneralVCscale = [self.numTextFiled.text doubleValue];
     vc.iSTaxiCard = NO;
@@ -219,21 +121,22 @@
  基础文字识别【出租车资格证识别】
  */
 - (void)taxiCargeneralBasicOCR{
-  
-    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image) {
+    __weak typeof(self) weakSelf  = self;
+    self.isTaxiCard = YES;
+    self.isLineCard = NO;
+    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image,NSDate *StartTime) {
         
-        //        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
         
-        //        NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-        //        [[AipOcrService shardService] detectTextBasicFromImage:image
-        //                                                   withOptions:options
-        //                                                successHandler:_successHandler
-        //                                                   failHandler:_failHandler];
+        NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
+        [[AipOcrService shardService] detectTextBasicFromImage:image
+                                                   withOptions:options
+                                                successHandler:_successHandler
+                                                   failHandler:_failHandler];
         
+        //        [weakSelf performSelectorOnMainThread:@selector(demoDoThingImage:startTime:) withObject:nil waitUntilDone:NO];
         
-        [self demoDoThingImage:image];
-        
-        
+        [self demoDoThingImage:image startTime:StartTime];
     }];
     vc.GeneralVCscale = [self.numTextFiled.text doubleValue];
     vc.iSTaxiCard = YES;
@@ -246,20 +149,18 @@
  基础文字识别【线路牌资格证识别】
  */
 - (void)lineCardgeneralBasicOCR{
-    
-    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image) {
+    self.isTaxiCard = NO;
+    self.isLineCard = YES;
+    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image,NSDate *StartTime) {
         
-        //        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
         
-        //        NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
-        //        [[AipOcrService shardService] detectTextBasicFromImage:image
-        //                                                   withOptions:options
-        //                                                successHandler:_successHandler
-        //                                                   failHandler:_failHandler];
-        
-        
-        [self demoDoThingImage:image];
-        
+        NSDictionary *options = @{@"language_type": @"CHN_ENG", @"detect_direction": @"true"};
+        [[AipOcrService shardService] detectTextBasicFromImage:image
+                                                   withOptions:options
+                                                successHandler:_successHandler
+                                                   failHandler:_failHandler];
+        [self demoDoThingImage:image startTime:StartTime];
         
     }];
     vc.GeneralVCscale = [self.numTextFiled.text doubleValue];
@@ -272,79 +173,60 @@
 
 //身份证正面
 - (void)idcardOCROnlineFront {
-    
-    AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
-                                                         andImageHandler:^(UIImage *image) {
-                                                             
-                                                             //                                     [[AipOcrService shardService] detectIdCardFrontFromImage:image
-                                                             //                                                                                  withOptions:nil
-                                                             //                                                                               successHandler:_successHandler                                                                                failHandler:_failHandler];
-                                                             [self demoDoThingImage:image];
-                                                             
-                                                         }];
-    vc.CaptureCardscale = [self.numTextFiled.text doubleValue];
-    vc.iSEmployedCard = NO;
-    [self presentViewController:vc animated:YES completion:nil];
-    
-}
-//  扫描识别身份证正面
-- (void)localIdcardOCROnlineFront {
-  
-    self.isScan = YES;
-   
-    AipCaptureCardVC * vc =
-    [AipCaptureCardVC ViewControllerWithCardType:CardTypeLocalIdCardFont
-                                 andImageHandler:^(UIImage *image) {
-                                     
-                                     [[AipOcrService shardService] detectIdCardFrontFromImage:image
-                                                                                  withOptions:nil
-                                                                               successHandler:^(id result){
-                                                                                   _successHandler(result);
-                                                                                   // 这里可以存入相册
-                                                                                   //UIImageWriteToSavedPhotosAlbum(image, nil, nil, (__bridge void *)self);
-                                                                               }
-                                                                                  failHandler:_failHandler];
-                                     
-                                 }];
-    
-    vc.CaptureCardscale = [self.numTextFiled.text doubleValue];
-    vc.iSEmployedCard = NO;
-    [self presentViewController:vc animated:YES completion:nil];
-    
-    
-}
+    self.isTaxiCard = NO;
+    self.isLineCard = NO;
 
+    AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
+                                                         andImageHandler:^(UIImage *image,NSDate *StartTime) {
+                                                             [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+                                                             
+                                                             [[AipOcrService shardService] detectIdCardFrontFromImage:image
+                                                                                                          withOptions:nil
+                                                                                                       successHandler:_successHandler                                                                                failHandler:_failHandler];
+                                                             [self demoDoThingImage:image startTime:StartTime];
+                                                         }];
+    
+    vc.CaptureCardscale = [self.numTextFiled.text doubleValue];
+    vc.iSEmployedCard = NO;
+    [self presentViewController:vc animated:YES completion:nil];
+    
+}
 
 //【从业资格证拍照识别---】身份证正面的接口
 - (void)EmpoyledCardOCROnlineFront {
-    
+    self.isTaxiCard = NO;
+    self.isLineCard = NO;
+
     AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
-                                                         andImageHandler:^(UIImage *image) {
+                                                         andImageHandler:^(UIImage *image,NSDate *StartTime) {
+                                                             [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
                                                              
-                                                             //                                     [[AipOcrService shardService] detectIdCardFrontFromImage:image
-                                                             //                                                                                  withOptions:nil
-                                                             //                                                                               successHandler:_successHandler                                                                                failHandler:_failHandler];
-                                                             [self demoDoThingImage:image];
                                                              
+                                                             [[AipOcrService shardService] detectIdCardFrontFromImage:image
+                                                                                                          withOptions:nil
+                                                                                                       successHandler:_successHandler                                                                                failHandler:_failHandler];
+                                                             [self demoDoThingImage:image startTime:StartTime];
                                                          }];
     vc.CaptureCardscale = [self.numTextFiled.text doubleValue];
     vc.iSEmployedCard = YES;//  是从业资格证
     [self presentViewController:vc animated:YES completion:nil];
 }
+
 /**车牌*/
 - (void)plateLicenseOCR{
-    __weak typeof(self) weakSelf = self;
-    
-    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image) {
+    self.isTaxiCard = NO;
+    self.isLineCard = NO;
+
+    AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image,NSDate *StartTime){
         
-        //        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
-        //
-        //        [[AipOcrService shardService] detectPlateNumberFromImage:image
-        //                                                     withOptions:nil
-        //                                                  successHandler:_successHandler
-        //                                                     failHandler:_failHandler];
+        [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
         
-        [weakSelf demoDoThingImage:image];
+        [[AipOcrService shardService] detectPlateNumberFromImage:image
+                                                     withOptions:nil
+                                                  successHandler:_successHandler
+                                                     failHandler:_failHandler];
+        [self demoDoThingImage:image startTime:StartTime];
+        
     }];
     
     vc.GeneralVCscale = [self.numTextFiled.text doubleValue];
@@ -353,6 +235,37 @@
     vc.isCarPlate = YES;
     [self presentViewController:vc animated:YES completion:nil];
 }
+
+//  扫描识别身份证正面
+- (void)localIdcardOCROnlineFront {
+    self.isTaxiCard = NO;
+    self.isLineCard = NO;
+
+    self.isScan = YES;
+    
+    AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeLocalIdCardFont
+                                                         andImageHandler:^(UIImage *image,NSDate *StartTime) {
+                                                             [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
+                                                             
+                                                             
+                                                             [[AipOcrService shardService] detectIdCardFrontFromImage:image
+                                                                                                          withOptions:nil
+                                                                                                       successHandler:^(id result){
+                                                                                                           _successHandler(result);
+                                                                                                           // 这里可以存入相册
+                                                                                                           //UIImageWriteToSavedPhotosAlbum(image, nil, nil, (__bridge void *)self);
+                                                                                                       }
+                                                                                                          failHandler:_failHandler];
+                                                             
+                                                         }];
+    
+    vc.CaptureCardscale = [self.numTextFiled.text doubleValue];
+    vc.iSEmployedCard = NO;
+    [self presentViewController:vc animated:YES completion:nil];
+    
+    
+}
+
 
 
 #pragma mark -------------------------    识别结果   -------------------------------
@@ -367,28 +280,21 @@
     // 这是默认的识别成功的回调
     _successHandler = ^(id result){
         
-         NSLog(@"%@", result);
+        NSLog(@"%@", result);
         
         NSString *title = @"识别结果";
-
-        NSLog(@"扫描=%d,出租车资格证=%d,线路牌=%d ",weakSelf.isScan,weakSelf.isTaxiCard,weakSelf.isLineCard);
         
-        if (!weakSelf.isScan) {//  扫描操作
-            //  隐藏hudView
-            [weakSelf performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
-        }
+        NSLog(@"扫描=%d,出租车资格证=%d,线路牌=%d ",weakSelf.isScan,weakSelf.isTaxiCard,weakSelf.isLineCard);
         
         if (weakSelf.isTaxiCard) {//  出租车资格证
             
             [weakSelf ocrTaxiCardSuccessful:result];
             
-        }
-        else if (weakSelf.isLineCard) {//  线路牌
-
+        }else if (weakSelf.isLineCard) {//  线路牌
+            
             [weakSelf ocrLinePlateSuccessful:result];
             
-        }
-        else{
+        }else{
             
             NSMutableString *message = [NSMutableString string];
             
@@ -396,7 +302,7 @@
                 if([result[@"words_result"] isKindOfClass:[NSDictionary class]]){
                     
                     [result[@"words_result"] enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-                       
+                        
                         if([obj isKindOfClass:[NSDictionary class]] && [obj objectForKey:@"words"]){
                             [message appendFormat:@"%@: %@\n", key, obj[@"words"]];
                         }else{
@@ -407,7 +313,7 @@
                 }else if([result[@"words_result"] isKindOfClass:[NSArray class]]){
                     
                     for(NSDictionary *obj in result[@"words_result"]){
-                    
+                        
                         if([obj isKindOfClass:[NSDictionary class]] && [obj objectForKey:@"words"]){
                             [message appendFormat:@"%@\n", obj[@"words"]];
                         }else{
@@ -422,6 +328,13 @@
                 [message appendFormat:@"%@", result];
             }
             
+            weakSelf.endTime = [NSDate date];
+            
+            if (!weakSelf.isScan) {//  扫描操作
+                //  隐藏hudView
+                [weakSelf performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
+            }
+            
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
                 UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:weakSelf cancelButtonTitle:@"确定" otherButtonTitles:nil];
                 [alertView show];
@@ -432,10 +345,12 @@
     _failHandler = ^(NSError *error){
         
         
-        [weakSelf performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
         
         NSLog(@"%@", error);
         
+        weakSelf.endTime = [NSDate date];
+        
+        [weakSelf performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
         
         NSString *msg = [NSString stringWithFormat:@"%li:%@", (long)[error code], [error localizedDescription]];
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
@@ -444,6 +359,7 @@
         
         
     };
+    
 }
 
 
@@ -453,7 +369,8 @@
  @param result result
  */
 - (void)ocrTaxiCardSuccessful:(id)result {
- 
+    
+   
     NSLog(@"result = %@",result);
     
     NSMutableString *message = [NSMutableString string];
@@ -466,7 +383,7 @@
             
             
             if (pureNumbers.length==6) {
-              
+                
                 [message appendFormat:@"%@",pureNumbers];
                 
                 NSLog(@"弹出：%@",message);
@@ -474,17 +391,27 @@
                 
                 NSLog(@"过滤的字段：%@",obj[@"words"]);
             }
-        
+            
         }
+        
+        self.endTime = [NSDate date];
+        //  隐藏hudView
+        [self performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
+        
+        
         [self alertActionTitle:@"出租车服务资格证号" message:message];
         
     }else{
         
         [message appendFormat:@"%@", result];
-
+        
+        self.endTime = [NSDate date];
+        //  隐藏hudView
+        [self performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
+        
         [self alertActionTitle:@"识别失败" message:message];
     }
-   
+    
 }
 
 
@@ -494,53 +421,59 @@
  @param result result
  */
 - (void)ocrLinePlateSuccessful:(id)result {
-    
-//    NSLog(@"result = %@",result);
+   
+    //    NSLog(@"result = %@",result);
     
     NSMutableString *message = [NSMutableString string];
     
     if(result[@"words_result"]){
-      
+        
         for(NSDictionary *obj in result[@"words_result"]){
             
-        NSString *pureNumbers = [[obj[@"words"] componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
-          
+            NSString *pureNumbers = [[obj[@"words"] componentsSeparatedByCharactersInSet:[[NSCharacterSet characterSetWithCharactersInString:@"0123456789"] invertedSet]] componentsJoinedByString:@""];
+            
             if ((pureNumbers.length==0 )&& ([obj[@"words"] rangeOfString:@"-"].location != NSNotFound || [obj[@"words"] rangeOfString:@"一"].location != NSNotFound)) {//  字符里面没有数字并且含有-或者一
-
+                
                 [message appendFormat:@"%@",obj[@"words"]];
-         
-                  NSLog(@"弹出：%@",message);
+                
+                NSLog(@"弹出：%@",message);
                 
             }else{
                 
                 NSLog(@"过滤字段： %@",obj[@"words"]);
             }
         }
-    
+        self.endTime = [NSDate date];
+        //  隐藏hudView
+        [self performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
+        
         [self alertActionTitle:@"起点-终点" message:message];
         
     }else{
         
         [message appendFormat:@"%@", result];
+      
+        self.endTime = [NSDate date];
+        //  隐藏hudView
+        [self performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
         
         [self alertActionTitle:@"识别失败" message:message];
-
+        
     }
 }
 
 -(void)alertActionTitle:(NSString *)title message:(NSMutableString *)message{
-
+    
     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
         [alertView show];
     }];
-
+    
 }
 
 #pragma mark ---------------------    界面函数方法处理    -------------------------
 
--(void)demoDoThingImage:(UIImage *)image{
-    
+-(void)demoDoThingImage:(UIImage *)image startTime:(NSDate *)startTime{
     
     NSData * imageData = UIImageJPEGRepresentation(image,0.7);
     
@@ -550,8 +483,21 @@
     self.imageView_H.constant = image.size.height/3;
     
     self.imageView.image = image;
+    
+    
+    self.startTime = startTime;
+    
 }
 
+//  计算请求时间
+-(void)dealStayTime{
+    
+    EdgeTimeHelper *timeHelper = [[EdgeTimeHelper alloc]init];
+    
+    self.stayTime = [timeHelper dealWithStayTimeStartTime:self.startTime endTime:self.endTime];
+    
+    self.timeLabel.text = self.stayTime;
+}
 
 /**
  隐藏hudView
@@ -559,15 +505,8 @@
 -(void)hideHudView{
     
     [MBProgressHUD hideHUDForView:self.view];
-    
-    EdgeTimeHelper *timeHelper = [[EdgeTimeHelper alloc]init];
-    
-    self.endTime = [NSDate date];
-    
-    self.stayTime = [timeHelper dealWithStayTimeStartTime:self.startTime endTime:self.endTime];
-    
-    self.timeLabel.text = self.stayTime;
-   
+    //  时间处理
+    [self dealStayTime];
 }
 - (void)updateTableView {
     
@@ -664,10 +603,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.isScan = NO;
-    self.isTaxiCard = NO;
-    self.isLineCard = NO;
-    
+   
     [self updateTableView];
+    
+    self.timeLabel.text = @"";
+    //    self.sizeLabel.text = @"";
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -676,6 +616,7 @@
 
 #pragma mark UIAlertViewDelegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -866,7 +807,7 @@
 //        //
 //        [self demoDoThingImage:image];}];
 //    vc.GeneralVCscale = [self.numTextFiled.text doubleValue];
-//    
+//
 //    [self presentViewController:vc animated:YES completion:nil];
 //}
 

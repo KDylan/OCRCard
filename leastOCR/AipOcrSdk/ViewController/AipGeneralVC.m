@@ -134,6 +134,8 @@ static const CGFloat cardScale = 0.02;
 
 -(void)ViewInit{
     
+    self.checkChooseBtn.hidden = YES;
+    
     [self setupViews];
     //  添加扫描线
     self.backGroundView.hidden = NO;
@@ -162,6 +164,9 @@ static const CGFloat cardScale = 0.02;
 //        self.maskImageView.hidden = NO;
         //  添加图片裁剪view
         [self setUpMaskImageView];
+        
+        //  显示选择按钮
+        self.checkChooseBtn.hidden = NO;
     }
     
     //  添加对焦View
@@ -288,8 +293,6 @@ static const CGFloat cardScale = 0.02;
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(focusGesture:)];
     
     [self.view addGestureRecognizer:tapGesture];
-    
-    
 }
 
 /**
@@ -334,11 +337,23 @@ static const CGFloat cardScale = 0.02;
     
 }
 
+//-(void)returnTimeBlock:(getTimeStringBlock)block{
+//    
+//    self.startTime  = block;
+//}
 
 #pragma mark -----------------------  按钮点击方法  ------------------------------
 
 //设置背景图
 - (void)setupCutImageView:(UIImage *)image fromPhotoLib:(BOOL)isFromLib {
+      
+//    if (self.startTime) {
+//        
+//        self.startTime([NSDate date]);
+//        
+//    }else{
+//        NSLog(@"起始时间为空");
+//    }
     
     if (isFromLib) {
         
@@ -361,8 +376,12 @@ static const CGFloat cardScale = 0.02;
         self.maskImageView.hidden = NO;
         
     }
-
      [self shapeLayerChangeDark];
+   
+    if (self.isCarPlate||self.isLineCard||self.iSTaxiCard) {
+        
+        [self CutImageAndRequest];
+    }
 }
 
 #pragma mark - Action handling -----------------  点击按钮响应方法  ------------------------
@@ -419,6 +438,15 @@ static const CGFloat cardScale = 0.02;
  */
 - (IBAction)pressCheckChoose:(id)sender {
    
+    if (!self.isCarPlate&&!self.isLineCard&&!self.iSTaxiCard) {
+        
+        [self CutImageAndRequest];
+    }
+}
+
+-(void)CutImageAndRequest{
+    
+    NSLog(@"进来请求");
     //  开启截图
     CGRect rect  = [self TransformTheRect];
     
@@ -430,7 +458,8 @@ static const CGFloat cardScale = 0.02;
     
     if (self.handler) {
         
-        self.handler(finalImage);
+//        self.handler(finalImage);
+        self.handler(finalImage, [NSDate date]);
     }
     
     [self dismissViewControllerAnimated:YES completion:^{
@@ -464,7 +493,6 @@ static const CGFloat cardScale = 0.02;
         
         [weakSelf setupCutImageView:[UIImage imageWithData:imageData]fromPhotoLib:NO];
     }];
-
 }
 
 //  退出页面
@@ -573,7 +601,7 @@ static const CGFloat cardScale = 0.02;
 #pragma mark ------------------------ 系统处理方法 --------------------------
 
 
-+(AipGeneralVC *)ViewControllerWithHandler:(void (^)(UIImage *image))handler {
++(AipGeneralVC *)ViewControllerWithHandler:(handler)handler{
     
     UIStoryboard *mainSB = [UIStoryboard storyboardWithName:@"AipOcrSdk" bundle:[NSBundle bundleForClass:[self class]]];
     
@@ -809,6 +837,7 @@ static const CGFloat cardScale = 0.02;
         }
         
         self.size = CGSizeMake(bgImageViewH, bgImageViewW);
+        
     }else if (self.imageOrientation == UIImageOrientationLeft){
         
         if (scanViewX < bgImageViewX) {
@@ -907,7 +936,6 @@ static const CGFloat cardScale = 0.02;
     
     return YES;
 }
-
 
 - (void)dealloc{
     

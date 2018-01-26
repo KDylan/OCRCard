@@ -8,16 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
+typedef void (^handler)(UIImage *,NSDate *StartTime);
+
 @interface AipGeneralVC : UIViewController
 
 
-@property (nonatomic, copy) void (^handler)(UIImage *);
+@property (nonatomic, copy) handler handler;
 
 //+(UIViewController *)ViewControllerWithHandler:(void (^)(UIImage *image))handler;
 
 @property (nonatomic, assign)   CGFloat GeneralVCscale;
 
-+(AipGeneralVC *)ViewControllerWithHandler:(void (^)(UIImage *image))handler;
++(AipGeneralVC *)ViewControllerWithHandler:(handler)handler;
 
 /** 出租车资格证 */
 @property(nonatomic,assign,getter=iSTaxiCard)BOOL iSTaxiCard;
@@ -25,5 +27,11 @@
 @property(nonatomic,assign,getter=isLineCard)BOOL isLineCard;
 /** 车牌 */
 @property(nonatomic,assign,getter=isCarPlate)BOOL isCarPlate;
+
+//
+///**开始时间*/
+//@property(nonatomic,copy)getTimeStringBlock startTime;
+//
+//-(void)returnTimeBlock:(getTimeStringBlock)block;
 
 @end
