@@ -84,7 +84,7 @@
     
     [self.actionList addObject:@[@"【表格】文字通用识别", @"generalBasicOCR"]];
     
-    [self.actionList addObject:@[@"身份证正面【拍照识别】", @"idcardOCROnlineFront"]];
+    [self.actionList addObject:@[@"【身份证正面】拍照识别", @"idcardOCROnlineFront"]];
     
 //    [self.actionList addObject:@[@"身份证正面【扫描识别】", @"localIdcardOCROnlineFront"]];
 }

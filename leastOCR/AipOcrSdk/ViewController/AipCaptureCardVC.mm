@@ -131,7 +131,7 @@ static const CGFloat cardScale = 0.02;
 -(void)ViewInit{
     
     self.checkChooseBtn.hidden = YES;
-    
+    self.albumButton.hidden = YES;
     [self setupViews];
     //初始化身份证质量控制模块
     [self setupIdcardQuality];

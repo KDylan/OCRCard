@@ -78,8 +78,8 @@
                                 <rect key="frame" x="0.0" y="569" width="375" height="98"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bXb-J8-dLk" customClass="IOSpeScaleLayoutButton">
-                                        <rect key="frame" x="158" y="19" width="60" height="60"/>
-                                        <state key="normal" image="paizhaoanniu.png"/>
+                                        <rect key="frame" x="152" y="13" width="72" height="72"/>
+                                        <state key="normal" image="take_pic_btn"/>
                                         <state key="highlighted" image="paizhaoanniu_dianjihou.png"/>
                                         <connections>
                                             <action selector="captureIDCard:" destination="ANZ-N0-y67" eventType="touchUpInside" id="QwT-Ki-nvs"/>
@@ -93,9 +93,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fY2-F2-021" customClass="IOSpeScaleLayoutButton">
-                                        <rect key="frame" x="325" y="31" width="26" height="28"/>
-                                        <state key="normal" image="dengpao.png"/>
-                                        <state key="selected" image="dengpao_dianjihou.png"/>
+                                        <rect key="frame" x="311" y="25" width="40" height="40"/>
+                                        <state key="normal" image="camera_flash_off"/>
+                                        <state key="selected" image="camera_flash_on"/>
                                         <connections>
                                             <action selector="turnLight:" destination="ANZ-N0-y67" eventType="touchUpInside" id="DRq-Fc-ysR"/>
                                         </connections>
@@ -255,8 +255,8 @@
                                 <rect key="frame" x="0.0" y="569" width="375" height="98"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x4H-6Q-TiY" customClass="IOSpeScaleLayoutButton">
-                                        <rect key="frame" x="158" y="19" width="60" height="60"/>
-                                        <state key="normal" image="paizhaoanniu.png"/>
+                                        <rect key="frame" x="152" y="13" width="72" height="72"/>
+                                        <state key="normal" image="take_pic_btn"/>
                                         <state key="highlighted" image="paizhaoanniu_dianjihou.png"/>
                                         <connections>
                                             <action selector="captureIDCard:" destination="qVB-bS-VcD" eventType="touchUpInside" id="fWy-c4-e7z"/>
@@ -270,9 +270,9 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FYu-ia-exw" customClass="IOSpeScaleLayoutButton">
-                                        <rect key="frame" x="325" y="31" width="26" height="28"/>
-                                        <state key="normal" image="dengpao.png"/>
-                                        <state key="selected" image="dengpao_dianjihou.png"/>
+                                        <rect key="frame" x="311" y="25" width="40" height="40"/>
+                                        <state key="normal" image="camera_flash_off"/>
+                                        <state key="selected" image="camera_flash_on"/>
                                         <connections>
                                             <action selector="turnLight:" destination="qVB-bS-VcD" eventType="touchUpInside" id="5Mf-mC-bsQ"/>
                                         </connections>
@@ -394,13 +394,13 @@
     </scenes>
     <resources>
         <image name="Page 1.png" width="67" height="72"/>
-        <image name="dengpao.png" width="26" height="28"/>
-        <image name="dengpao_dianjihou.png" width="26" height="28"/>
+        <image name="camera_flash_off" width="40" height="40"/>
+        <image name="camera_flash_on" width="40" height="40"/>
         <image name="guan.png" width="14" height="14"/>
         <image name="guanbi.png" width="31" height="31"/>
-        <image name="paizhaoanniu.png" width="60" height="60"/>
         <image name="paizhaoanniu_dianjihou.png" width="60" height="60"/>
         <image name="queding.png" width="21" height="14"/>
+        <image name="take_pic_btn" width="72" height="72"/>
         <image name="tuku.png" width="25" height="22"/>
         <image name="xuanzhuan.png" width="21" height="20"/>
         <image name="xuxian.png" width="125" height="128"/>

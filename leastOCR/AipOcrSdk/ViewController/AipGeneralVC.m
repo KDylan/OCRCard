@@ -135,7 +135,7 @@ static const CGFloat cardScale = 0.02;
 -(void)ViewInit{
     
     self.checkChooseBtn.hidden = YES;
-    
+     self.albumButton.hidden = YES;
     [self setupViews];
     //  添加扫描线
     self.backGroundView.hidden = NO;
