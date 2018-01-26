@@ -123,7 +123,7 @@ static const CGFloat cardScale = 0.02;
     }
     
     NSLog(@"%f", self.cutImageView.scale );
-
+    
 }
 
 #pragma mark -------------------------   viewInit  --------------------------------
@@ -139,7 +139,7 @@ static const CGFloat cardScale = 0.02;
     self.shapeLayer = [CAShapeLayer layer];
     
     [self.backgroundView.layer addSublayer:self.shapeLayer];
-
+    
     //利用陀螺仪判断设备方向
     [self setupCmmotionManager];
     //  添加对焦View
@@ -227,12 +227,12 @@ static const CGFloat cardScale = 0.02;
 
 //上传图片识别结果
 - (IBAction)pressCheckChoose:(id)sender {
-  
+    
 }
 
 
 /**
-  图片请求操作
+ 图片请求操作
  */
 -(void)imageRequestAction{
     
@@ -254,7 +254,7 @@ static const CGFloat cardScale = 0.02;
     switch (self.cardType) {
         case CardTypeIdCardFont:{//   身份证正面
             if(self.handler){
-//                self.handler(self.finalImage);
+                //                self.handler(self.finalImage);
                 self.handler(self.finalImage, [NSDate date]);
                 [self dismissViewControllerAnimated:YES completion:^{
                     //  保存图片到本地相册
@@ -267,7 +267,7 @@ static const CGFloat cardScale = 0.02;
             
         case CardTypeIdCardBack: { //  身份证背面
             if(self.handler){
-                  self.handler(self.finalImage, [NSDate date]);
+                self.handler(self.finalImage, [NSDate date]);
                 [self dismissViewControllerAnimated:YES completion:^{
                     //  保存图片到本地相册
                     UIImageWriteToSavedPhotosAlbum(self.finalImage, self, nil, nil);
@@ -278,7 +278,7 @@ static const CGFloat cardScale = 0.02;
             break;
         case CardTypeBankCard: {  //  银行卡
             if(self.handler){
-                  self.handler(self.finalImage, [NSDate date]);
+                self.handler(self.finalImage, [NSDate date]);
                 [self dismissViewControllerAnimated:YES completion:^{
                     //  保存图片到本地相册
                     UIImageWriteToSavedPhotosAlbum(self.finalImage, self, nil, nil);
@@ -313,7 +313,7 @@ static const CGFloat cardScale = 0.02;
         self.cardType = self.cardTypeFromVC;
     }
     
-
+    
 }
 
 
@@ -328,7 +328,7 @@ static const CGFloat cardScale = 0.02;
 - (IBAction)captureIDCard:(id)sender {
     
     __weak __typeof (self) weakSelf = self;
-   
+    
     [self.cameraController captureStillImageWithHandler:^(NSData *imageData) {
         
         
@@ -395,20 +395,20 @@ static const CGFloat cardScale = 0.02;
 - (void)shapeLayerChangeDark{
     
     self.shapeLayer.fillColor = [UIColor colorWithWhite:0 alpha:0.8].CGColor;
-//     self.shapeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7].CGColor;
+    //     self.shapeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.7].CGColor;
 }
 
 +(AipCaptureCardVC *)ViewControllerWithCardType:(CardType)type andImageHandler:(handler)handler {
     
     UIStoryboard *mainSB = [UIStoryboard storyboardWithName:@"AipOcrSdk" bundle:[NSBundle bundleForClass:[self class]]];
     AipCaptureCardVC *CaptureCardVC = [mainSB instantiateViewControllerWithIdentifier:@"AipCaptureCardVC"];
-
+    
     CaptureCardVC.cardType = type;
     
     CaptureCardVC.handler = handler;
-
+    
     NSLog(@"进来身份证");
-//    AipNavigationController *navController = [[AipNavigationController alloc] initWithRootViewController:CaptureCardVC];
+    //    AipNavigationController *navController = [[AipNavigationController alloc] initWithRootViewController:CaptureCardVC];
     return CaptureCardVC;
 }
 #pragma mark ---------------------------    自定义函数    ---------------------------
@@ -480,7 +480,7 @@ static const CGFloat cardScale = 0.02;
     
     switch (self.cardType) {
             
-            case CardTypeIdCardFont:
+        case CardTypeIdCardFont:
         {
             NSLog(@"self.iSEmployedCard = %d",self.iSEmployedCard);
             if (!self.iSEmployedCard) {//  从业资格证
@@ -499,7 +499,7 @@ static const CGFloat cardScale = 0.02;
             
         }
             break;
-            case CardTypeLocalIdCardFont:
+        case CardTypeLocalIdCardFont:
         {
             self.peopleImageView.hidden = NO;
             self.emblemImageView.hidden = YES;
@@ -509,14 +509,14 @@ static const CGFloat cardScale = 0.02;
             self.displaylink = [AipDisplayLink displayLinkWithDelegate:self];
         }
             break;
-            case CardTypeIdCardBack:
+        case CardTypeIdCardBack:
         {
             self.peopleImageView.hidden = YES;
             self.emblemImageView.hidden = NO;
             self.tipsLabel.text = MyLocal(@"对齐身份证背面");
         }
             break;
-            case CardTypeLocalIdCardBack:
+        case CardTypeLocalIdCardBack:
         {
             self.peopleImageView.hidden = YES;
             self.emblemImageView.hidden = NO;
@@ -526,7 +526,7 @@ static const CGFloat cardScale = 0.02;
             self.displaylink = [AipDisplayLink displayLinkWithDelegate:self];
         }
             break;
-            case CardTypeBankCard:
+        case CardTypeBankCard:
         {
             self.peopleImageView.hidden = YES;
             self.emblemImageView.hidden = YES;
@@ -673,7 +673,7 @@ static const CGFloat cardScale = 0.02;
         self.tipsLabel.text = MyLocal(@"初始化成功：");
         
     }else{
-
+        
         self.tipsLabel.text = MyLocal(@"初始化错误状态:%u",model.errorType);
         return ;
         
@@ -736,9 +736,9 @@ static const CGFloat cardScale = 0.02;
             self.Indicator.hidden = NO;
             [self.Indicator startAnimating];
             tips = [NSString stringWithFormat:@"状态正常 识别中.."];
-
+            
             if(self.handler){
-                   self.handler(self.finalImage, [NSDate date]);
+                self.handler(self.finalImage, [NSDate date]);
             }
             self.recognizedSucceed = YES;
             dispatch_semaphore_signal(_sema);
@@ -880,7 +880,7 @@ static const CGFloat cardScale = 0.02;
         
         self.size = CGSizeMake(bgImageViewW, bgImageViewH);
     }
-
+    
     return CGRectMake(x, y, width, height);
 }
 
@@ -922,7 +922,7 @@ static const CGFloat cardScale = 0.02;
             dispatch_sync(dispatch_get_main_queue(), ^{
                 
                 [self.cutImageView setBGImage:image fromPhotoLib:NO useGestureRecognizer:NO];
-
+                
                 [self pressCheckChoose:nil];
                 
             });
@@ -958,9 +958,9 @@ static const CGFloat cardScale = 0.02;
     UIImage *image = [info valueForKey:UIImagePickerControllerOriginalImage];
     NSAssert(image, @" ");
     if (image) {
-
+        
         [self setupCutImageView:image fromPhotoLib:YES];
-    
+        
         //对于相册选取的照片暂时切换状态
         if (self.cardType == CardTypeLocalIdCardFont) {
             self.cardType = CardTypeIdCardFont;
@@ -969,13 +969,13 @@ static const CGFloat cardScale = 0.02;
             self.cardType = CardTypeIdCardBack;
             [self setupWithCardType];
         }
-
+        
         [picker dismissViewControllerAnimated:YES completion:nil];
     }
 }
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-
+    
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self.displaylink start];
     self.recognizedSucceed = NO;
@@ -988,8 +988,8 @@ static const CGFloat cardScale = 0.02;
 - (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo
 {
     
-//    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
-
+    //    NSLog(@"image = %@, error = %@, contextInfo = %@", image, error, contextInfo);
+    
     dispatch_semaphore_signal(_sema);
     self.recognizedSucceed = NO;
     
@@ -998,14 +998,14 @@ static const CGFloat cardScale = 0.02;
     }else{
         NSLog(@"图片保存成功");
     }
-
+    
 }
 
 
 
 /**
  聚焦手势
-
+ 
  @param gesture sender
  */
 - (void)focusGesture:(UITapGestureRecognizer*)gesture{
@@ -1050,7 +1050,7 @@ static const CGFloat cardScale = 0.02;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-
+    
     return UIInterfaceOrientationMaskPortrait;
 }
 

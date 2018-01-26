@@ -94,7 +94,7 @@ static const CGFloat cardScale = 0.02;
     
     //  初始化View
     [self ViewInit];
-   
+    
 }
 
 -(void)config{
@@ -113,29 +113,29 @@ static const CGFloat cardScale = 0.02;
     if (self.GeneralVCscale == 0) {
         
         if (self.isLineCard||self.iSTaxiCard) {
-             self.cutImageView.scale = 1.2;
+            self.cutImageView.scale = 1.2;
             
         }else if(self.isCarPlate){
             
-         self.cutImageView.scale = 1.5;
+            self.cutImageView.scale = 1.5;
             
         }else{
-              self.cutImageView.scale = 1.2;
+            self.cutImageView.scale = 1.2;
         }
-    
+        
     }else{
         
         self.cutImageView.scale = self.GeneralVCscale;
     }
     NSLog(@" self.cutImageView.scale = %f", self.cutImageView.scale);
-
- }
+    
+}
 
 
 -(void)ViewInit{
     
     self.checkChooseBtn.hidden = YES;
-     self.albumButton.hidden = YES;
+    self.albumButton.hidden = YES;
     [self setupViews];
     //  添加扫描线
     self.backGroundView.hidden = NO;
@@ -145,7 +145,7 @@ static const CGFloat cardScale = 0.02;
     if (self.iSTaxiCard) {// 是出租车从业资格证 或者 线路牌
         //  添加提示框
         [self addMessageLabelTitle:@"对齐出租车服务资格证正面"];
-      //  显示出租车服务资格证扫描框
+        //  显示出租车服务资格证扫描框
         self.taxiScanView.hidden = NO;
         
     }else if(self.isLineCard){
@@ -159,9 +159,9 @@ static const CGFloat cardScale = 0.02;
         
         [self addMessageLabelTitle:@"对齐车牌"];
     }else{//  普通的拍照
-    
+        
         self.backGroundView.hidden = YES;
-//        self.maskImageView.hidden = NO;
+        //        self.maskImageView.hidden = NO;
         //  添加图片裁剪view
         [self setUpMaskImageView];
         
@@ -199,7 +199,7 @@ static const CGFloat cardScale = 0.02;
     self.plateScanView = plateScanView;
     
     [self.view addSubview:plateScanView];
-
+    
 }
 
 /**
@@ -208,7 +208,7 @@ static const CGFloat cardScale = 0.02;
 -(void)addMessageLabelTitle:(NSString *)msgtitle{
     
     IOSpeScaleLayoutLabel *msgLabel = [[IOSpeScaleLayoutLabel alloc]init];
-     self.msgLabel = msgLabel;
+    self.msgLabel = msgLabel;
     msgLabel.text = msgtitle;
     msgLabel.textColor = [UIColor whiteColor];
     msgLabel.textAlignment = NSTextAlignmentCenter;
@@ -338,7 +338,7 @@ static const CGFloat cardScale = 0.02;
 }
 
 //-(void)returnTimeBlock:(getTimeStringBlock)block{
-//    
+//
 //    self.startTime  = block;
 //}
 
@@ -346,14 +346,14 @@ static const CGFloat cardScale = 0.02;
 
 //设置背景图
 - (void)setupCutImageView:(UIImage *)image fromPhotoLib:(BOOL)isFromLib {
-      
-//    if (self.startTime) {
-//        
-//        self.startTime([NSDate date]);
-//        
-//    }else{
-//        NSLog(@"起始时间为空");
-//    }
+    
+    //    if (self.startTime) {
+    //
+    //        self.startTime([NSDate date]);
+    //
+    //    }else{
+    //        NSLog(@"起始时间为空");
+    //    }
     
     if (isFromLib) {
         
@@ -372,12 +372,12 @@ static const CGFloat cardScale = 0.02;
     self.toolViewBoom.constant = -V_H(self.toolsView);
     
     if (!self.isCarPlate&&!self.iSTaxiCard&&!self.isLineCard) {//  进入普通拍照
-    
+        
         self.maskImageView.hidden = NO;
         
     }
-     [self shapeLayerChangeDark];
-   
+    [self shapeLayerChangeDark];
+    
     if (self.isCarPlate||self.isLineCard||self.iSTaxiCard) {
         
         [self CutImageAndRequest];
@@ -433,11 +433,11 @@ static const CGFloat cardScale = 0.02;
 
 /**
  //上传图片识别结果
-
+ 
  @param sender sender
  */
 - (IBAction)pressCheckChoose:(id)sender {
-   
+    
     if (!self.isCarPlate&&!self.isLineCard&&!self.iSTaxiCard) {
         
         [self CutImageAndRequest];
@@ -458,7 +458,7 @@ static const CGFloat cardScale = 0.02;
     
     if (self.handler) {
         
-//        self.handler(finalImage);
+        //        self.handler(finalImage);
         self.handler(finalImage, [NSDate date]);
     }
     
@@ -466,12 +466,12 @@ static const CGFloat cardScale = 0.02;
         //  保存图片到本地相册
         UIImageWriteToSavedPhotosAlbum(finalImage, self, @selector(image:didFinishSavingWithError:contextInfo:), nil);
     }];
-
+    
 }
 
 /**
  重新拍照
-
+ 
  @param sender sender
  */
 - (IBAction)pressCheckBack:(id)sender {
@@ -482,7 +482,7 @@ static const CGFloat cardScale = 0.02;
 
 /**
  点击进行拍照
-
+ 
  @param sender sender
  */
 - (IBAction)captureIDCard:(id)sender {
@@ -564,14 +564,14 @@ static const CGFloat cardScale = 0.02;
 - (void)setupShapeLayer{
     
     UIBezierPath *path = [UIBezierPath bezierPathWithRect:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-   
+    
     if (self.iSTaxiCard || self.isLineCard) {//  出租车
         
-    [path appendPath:[[UIBezierPath bezierPathWithRoundedRect:self.taxiScanView.frame cornerRadius:scanViewCornerRadius *[self.class speScale]] bezierPathByReversingPath]];
+        [path appendPath:[[UIBezierPath bezierPathWithRoundedRect:self.taxiScanView.frame cornerRadius:scanViewCornerRadius *[self.class speScale]] bezierPathByReversingPath]];
         
     }else  if (self.isCarPlate) {
         
-     [path appendPath:[[UIBezierPath bezierPathWithRoundedRect:self.plateScanView.frame cornerRadius:0] bezierPathByReversingPath]];
+        [path appendPath:[[UIBezierPath bezierPathWithRoundedRect:self.plateScanView.frame cornerRadius:0] bezierPathByReversingPath]];
     }
     
     [self shapeLayerChangeLight];
@@ -586,7 +586,7 @@ static const CGFloat cardScale = 0.02;
 }
 
 - (void)shapeLayerChangeDark{
-//    self.shapeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5].CGColor;
+    //    self.shapeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5].CGColor;
     self.shapeLayer.fillColor = [UIColor colorWithWhite:0 alpha:0.8].CGColor;
 }
 
@@ -686,21 +686,21 @@ static const CGFloat cardScale = 0.02;
     if (self.curDeviceOrientation == UIDeviceOrientationPortrait) {
         
         transform = CGAffineTransformMakeRotation(0);
-       
+        
         self.msgLabel.hidden = NO;
         
         self.imageDeviceOrientation = UIDeviceOrientationPortrait;
     }else if (self.curDeviceOrientation == UIDeviceOrientationLandscapeLeft){
         
         transform = CGAffineTransformMakeRotation(M_PI_2);
-       
+        
         self.msgLabel.hidden = YES;
         
         self.imageDeviceOrientation = UIDeviceOrientationLandscapeLeft;
     }else if (self.curDeviceOrientation == UIDeviceOrientationLandscapeRight){
         
         transform = CGAffineTransformMakeRotation(-M_PI_2);
-     
+        
         self.msgLabel.hidden = YES;
         
         self.imageDeviceOrientation = UIDeviceOrientationLandscapeRight;
@@ -712,11 +712,11 @@ static const CGFloat cardScale = 0.02;
         self.imageDeviceOrientation = UIDeviceOrientationPortrait;
         
     }
-   
+    
     //重置shapeLayer
     [self setupShapeLayer];
     
-
+    
     [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
         
         self.albumButton.transform = transform;
@@ -755,26 +755,26 @@ static const CGFloat cardScale = 0.02;
     
     if (self.iSTaxiCard || self.isLineCard) {//  卡片【矩形】
         
-         scale = cardScale * V_W(self.taxiScanView);
-         scale2 = cardScale * V_H(self.taxiScanView);
+        scale = cardScale * V_W(self.taxiScanView);
+        scale2 = cardScale * V_H(self.taxiScanView);
         
         //此算法版本对于身份证完整性要求较为严格，所以传给算法识别的图片会略大于裁剪框的大小
-         scanViewX = V_X(self.taxiScanView) - scale;
-         scanViewY = V_Y(self.taxiScanView) - scale2;
-         scanViewW = V_W(self.taxiScanView) + scale*2;
-         scanViewH = V_H(self.taxiScanView) + scale2*2;
-
+        scanViewX = V_X(self.taxiScanView) - scale;
+        scanViewY = V_Y(self.taxiScanView) - scale2;
+        scanViewW = V_W(self.taxiScanView) + scale*2;
+        scanViewH = V_H(self.taxiScanView) + scale2*2;
+        
     }else if (self.isCarPlate){//  车牌【正方形】
-    
-         scale = cardScale * V_W(self.plateScanView);
-         scale2 = cardScale * V_H(self.plateScanView);
+        
+        scale = cardScale * V_W(self.plateScanView);
+        scale2 = cardScale * V_H(self.plateScanView);
         
         //此算法版本对于身份证完整性要求较为严格，所以传给算法识别的图片会略大于裁剪框的大小
-         scanViewX = V_X(self.plateScanView) - scale;
-         scanViewY = V_Y(self.plateScanView) - scale2;
-         scanViewW = V_W(self.plateScanView) + scale*2;
-         scanViewH = V_H(self.plateScanView) + scale2*2;
-
+        scanViewX = V_X(self.plateScanView) - scale;
+        scanViewY = V_Y(self.plateScanView) - scale2;
+        scanViewW = V_W(self.plateScanView) + scale*2;
+        scanViewH = V_H(self.plateScanView) + scale2*2;
+        
     }else{//  普通拍照裁剪[自定义]
         
         scanViewX = V_X(self.maskImageView.cropAreaView);
@@ -909,9 +909,9 @@ static const CGFloat cardScale = 0.02;
 - (void)viewDidAppear:(BOOL)animated{
     
     [super viewDidAppear:animated];
-   
+    
     [self setupShapeLayer];
-   
+    
     [self.cameraController startRunningCamera];
     
 }
@@ -957,7 +957,7 @@ static const CGFloat cardScale = 0.02;
     [self shapeLayerChangeLight];
 }
 - (void)AipCutImageEndPaint{
-     [self shapeLayerChangeDark];
+    [self shapeLayerChangeDark];
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

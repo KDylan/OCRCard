@@ -54,7 +54,7 @@
 }
 
 - (void)commonInit {
- 
+    
     [self configureCamera];
     [self requestPermission];
     
@@ -161,18 +161,18 @@
 
 - (void)configureFaceDetection {
     
-//    [self executeAction:^{
-//        self.metadataOutput = [[AVCaptureMetadataOutput alloc] init];
-//        [self.metadataOutput setMetadataObjectsDelegate:self queue:self.sessionQueue];
-//        
-//        if ([self.session canAddOutput:self.metadataOutput]) {
-//            [self.session addOutput:self.metadataOutput];
-//        }
-//        
-//        if ([self.metadataOutput.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeFace]) {
-//            self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
-//        }
-//    }];
+    //    [self executeAction:^{
+    //        self.metadataOutput = [[AVCaptureMetadataOutput alloc] init];
+    //        [self.metadataOutput setMetadataObjectsDelegate:self queue:self.sessionQueue];
+    //
+    //        if ([self.session canAddOutput:self.metadataOutput]) {
+    //            [self.session addOutput:self.metadataOutput];
+    //        }
+    //
+    //        if ([self.metadataOutput.availableMetadataObjectTypes containsObject:AVMetadataObjectTypeFace]) {
+    //            self.metadataOutput.metadataObjectTypes = @[AVMetadataObjectTypeFace];
+    //        }
+    //    }];
     
 }
 
@@ -288,20 +288,20 @@
 
 #pragma mark - AVCaptureMetadataOutputObjectsDelegate
 //- (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputMetadataObjects:(NSArray *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
-//    
+//
 //    if (metadataObjects.count != 0) {
-//        
+//
 //        AVMetadataFaceObject *faceObj = [metadataObjects firstObject];
 //        if (self.delegate && [self.delegate respondsToSelector:@selector(cameraController:didDetectFace:)]) {
 //            [self.delegate cameraController:self didDetectFace:faceObj];
 //        }
-//        
+//
 //    }
-//    
+//
 //    if (self.delegate && [self.delegate respondsToSelector:@selector(captureOutput:didOutputMetadataObjects:fromConnection:)]) {
 //        [self.delegate captureOutput:captureOutput didOutputMetadataObjects:metadataObjects fromConnection:connection];
 //    }
-//    
+//
 //}
 
 #pragma mark - Utility
@@ -420,7 +420,7 @@
     [_session removeInput:_currentDeviceInput];
     [_session removeOutput:_videoOutput];
     [_session removeOutput:_stillCameraOutput];
-//    NSLog(@"AipCameraController dealloc");
+    //    NSLog(@"AipCameraController dealloc");
 }
 
 @end

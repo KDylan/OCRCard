@@ -86,7 +86,7 @@
     
     [self.actionList addObject:@[@"【身份证正面】拍照识别", @"idcardOCROnlineFront"]];
     
-//    [self.actionList addObject:@[@"身份证正面【扫描识别】", @"localIdcardOCROnlineFront"]];
+    //    [self.actionList addObject:@[@"身份证正面【扫描识别】", @"localIdcardOCROnlineFront"]];
 }
 
 /**
@@ -175,7 +175,7 @@
 - (void)idcardOCROnlineFront {
     self.isTaxiCard = NO;
     self.isLineCard = NO;
-
+    
     AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
                                                          andImageHandler:^(UIImage *image,NSDate *StartTime) {
                                                              [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
@@ -196,7 +196,7 @@
 - (void)EmpoyledCardOCROnlineFront {
     self.isTaxiCard = NO;
     self.isLineCard = NO;
-
+    
     AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeIdCardFont
                                                          andImageHandler:^(UIImage *image,NSDate *StartTime) {
                                                              [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
@@ -216,7 +216,7 @@
 - (void)plateLicenseOCR{
     self.isTaxiCard = NO;
     self.isLineCard = NO;
-
+    
     AipGeneralVC * vc = [AipGeneralVC ViewControllerWithHandler:^(UIImage *image,NSDate *StartTime){
         
         [MBProgressHUD showMessage:@"识别中..." ToView:self.view];
@@ -240,7 +240,7 @@
 - (void)localIdcardOCROnlineFront {
     self.isTaxiCard = NO;
     self.isLineCard = NO;
-
+    
     self.isScan = YES;
     
     AipCaptureCardVC * vc = [AipCaptureCardVC ViewControllerWithCardType:CardTypeLocalIdCardFont
@@ -370,7 +370,7 @@
  */
 - (void)ocrTaxiCardSuccessful:(id)result {
     
-   
+    
     NSLog(@"result = %@",result);
     
     NSMutableString *message = [NSMutableString string];
@@ -421,7 +421,7 @@
  @param result result
  */
 - (void)ocrLinePlateSuccessful:(id)result {
-   
+    
     //    NSLog(@"result = %@",result);
     
     NSMutableString *message = [NSMutableString string];
@@ -452,7 +452,7 @@
     }else{
         
         [message appendFormat:@"%@", result];
-      
+        
         self.endTime = [NSDate date];
         //  隐藏hudView
         [self performSelectorOnMainThread:@selector(hideHudView) withObject:nil waitUntilDone:NO];
@@ -603,7 +603,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.isScan = NO;
-   
+    
     [self updateTableView];
     
     self.timeLabel.text = @"";
